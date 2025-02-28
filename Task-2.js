@@ -1,3 +1,4 @@
+// Custom Error Class
 class ValidationError extends Error {
     constructor(message) {
         super(message);
@@ -5,21 +6,28 @@ class ValidationError extends Error {
     }
 }
 
+// Function to validate user details
 function validateDetails(user) {
+    if (!user.name) {
+        throw new ValidationError("Name cannot be empty.");
+    }
+
+    if (user.age < 18) {
+        throw new ValidationError("User must be at least 18 years old.");
+    }
+
+    if (!user.email || !user.email.includes("@")) {
+        throw new ValidationError("Invalid email address.");
+    }
+
+    return "User details are valid.";
+}
+
+// Function to handle validation and error catching
+function validateUser(user) {
     try {
-        if (!user.name) {
-            throw new ValidationError("Name cannot be empty.");
-        }
-
-        if (user.age < 18) {
-            throw new ValidationError("User must be at least 18 years old.");
-        }
-
-        if (!user.email || !user.email.includes("@")) {
-            throw new ValidationError("Invalid email address.");
-        }
-
-        console.log("User details are valid.");
+        const result = validateDetails(user);
+        console.log(result);
     } catch (error) {
         if (error instanceof ValidationError) {
             console.error("Validation Error:", error.message);
@@ -27,17 +35,17 @@ function validateDetails(user) {
             console.error("Unexpected Error:", error);
         }
     } finally {
-        console.log("Validation process completed.");
+        console.log("Validation process completed.\n");
     }
 }
 
-// Example usage
-const user1 = { name: "", age: 20, email: "user@example.com" };
-const user2 = { name: "Alice", age: 17, email: "alice@example.com" };
-const user3 = { name: "Bob", age: 25, email: "bobexample.com" };
-const user4 = { name: "Charlie", age: 22, email: "charlie@example.com" };
+// Test Users
+const users = [
+    { name: "", age: 20, email: "user@example.com" }, // Name error
+    { name: "Alice", age: 17, email: "alice@example.com" }, // Age error
+    { name: "Bob", age: 25, email: "bobexample.com" }, // Email error
+    { name: "Charlie", age: 22, email: "charlie@example.com" } // Valid
+];
 
-validateDetails(user1); // Name error
-validateDetails(user2); // Age error
-validateDetails(user3); // Email error
-validateDetails(user4); // Valid
+// Run validation for all users
+users.forEach(validateUser);
