@@ -11,35 +11,27 @@ function validateDetails(user) {
     if (!user.name) {
         throw new ValidationError("Name cannot be empty.");
     }
-
     if (user.age < 18) {
         throw new ValidationError("User must be at least 18 years old.");
     }
-
     if (!user.email || !user.email.includes("@")) {
         throw new ValidationError("Invalid email address.");
     }
-
     return "User details are valid.";
 }
 
 // Function to handle validation and error catching
 function validateUser(user) {
     try {
-        const result = validateDetails(user);
-        console.log(result);
+        console.log(validateDetails(user));
     } catch (error) {
-        if (error instanceof ValidationError) {
-            console.error("Validation Error:", error.message);
-        } else {
-            console.error("Unexpected Error:", error);
-        }
+        console.error(`Validation Error: ${error.message}`);
     } finally {
-        console.log("Validation process completed.\n");
+        console.log("Validation attempt completed.\n");
     }
 }
 
-// Test Users
+// Test Cases
 const users = [
     { name: "", age: 20, email: "user@example.com" }, // Name error
     { name: "Alice", age: 17, email: "alice@example.com" }, // Age error
