@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Orders</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 style="text-align: center;">Customer Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody id="customersTableBody">
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch data from orders.json
+        async function fetchCustomerData() {
+            try {
+                const response = await fetch("orders.json"); // Fetch the JSON file
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                
+                const orders = await response.json(); // Parse JSON response
+                
+                // Get table body element
+                const tableBody = document.getElementById("customersTableBody");
+
+                // Loop through each order and extract customer details
+                orders.forEach(order => {
+                    const customerName = order.customer.name;
+                    const customerEmail = order.customer.email;
+
+                    // Create a new row in the table
+                    const row = `<tr>
+                        <td>${customerName}</td>
+                        <td>${customerEmail}</td>
+                    </tr>`;
+
+                    // Append row to table
+                    tableBody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        // Call the function to fetch and display data
+        fetchCustomerData();
+    </script>
+
+</body>
+</html>
