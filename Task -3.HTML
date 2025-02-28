@@ -77,7 +77,6 @@
                 const customerName = order.customer.name;
                 const customerEmail = order.customer.email;
                 
-                // Calculate total price and quantity
                 let totalPrice = 0;
                 let totalQuantity = 0;
                 let itemsBought = [];
@@ -88,7 +87,6 @@
                     itemsBought.push(`${item.name} (x${item.quantity})`);
                 });
 
-                // Create table row
                 const row = `<tr>
                     <td>${customerName}</td>
                     <td>${customerEmail}</td>
@@ -97,12 +95,10 @@
                     <td>$${totalPrice.toFixed(2)}</td>
                 </tr>`;
 
-                // Append row to table
                 tableBody.innerHTML += row;
             });
         }
 
-        // Call function to populate table
         calculateTotal(ordersJSON);
     </script>
 
