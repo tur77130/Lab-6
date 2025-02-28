@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Orders</title>
+    <title>Customer List</title>
     <style>
         table {
             width: 50%;
@@ -22,7 +22,7 @@
 </head>
 <body>
 
-    <h2 style="text-align: center;">Customer Details</h2>
+    <h2 style="text-align: center;">Customer List</h2>
     <table>
         <thead>
             <tr>
@@ -31,22 +31,27 @@
             </tr>
         </thead>
         <tbody id="customersTableBody">
+            <!-- Customer details will be inserted here -->
         </tbody>
     </table>
 
     <script>
-        // Fetch data from orders.json
         async function fetchCustomerData() {
             try {
-                const response = await fetch("orders.json"); // Fetch the JSON file
+                // Fetch the orders.json file
+                const response = await fetch("orders.json");
                 if (!response.ok) {
-                    throw new Error("Network response was not ok");
+                    throw new Error("Error fetching JSON data");
                 }
-                
-                const orders = await response.json(); // Parse JSON response
-                
+
+                // Convert response to JSON
+                const orders = await response.json();
+
                 // Get table body element
                 const tableBody = document.getElementById("customersTableBody");
+
+                // Clear any previous content in the table
+                tableBody.innerHTML = "";
 
                 // Loop through each order and extract customer details
                 orders.forEach(order => {
@@ -54,20 +59,25 @@
                     const customerEmail = order.customer.email;
 
                     // Create a new row in the table
-                    const row = `<tr>
-                        <td>${customerName}</td>
-                        <td>${customerEmail}</td>
-                    </tr>`;
+                    const row = document.createElement("tr");
+
+                    const nameCell = document.createElement("td");
+                    nameCell.textContent = customerName;
+                    row.appendChild(nameCell);
+
+                    const emailCell = document.createElement("td");
+                    emailCell.textContent = customerEmail;
+                    row.appendChild(emailCell);
 
                     // Append row to table
-                    tableBody.innerHTML += row;
+                    tableBody.appendChild(row);
                 });
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         }
 
-        // Call the function to fetch and display data
+        // Call function to fetch and display customer data
         fetchCustomerData();
     </script>
 
